@@ -1,1 +1,27 @@
-<p>category-form works!</p>
+<app-bread-crumb
+  [items]="[{ text: 'Categorias', link: '/categories' }, { text: pageTitle }]"
+></app-bread-crumb>
+
+<mat-card class="custom-card">
+  <app-page-header
+    [pageTitle]="pageTitle"
+    [showButton]="false"
+  ></app-page-header>
+
+  <div fxLayout="column wrap" fxLayoutAlign="space-between stretch" fxLayoutGap="16px">
+    <mat-form-field fxFlex="30" fxFlex.xs="100">
+      <mat-label>Nome da categoria</mat-label>
+      <input matInput autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex fxFlex.xs="100">
+      <mat-label>Descrição da categoria</mat-label>
+      <input matInput autocomplete="off" />
+    </mat-form-field>
+
+    <span fxLayout="row" fxLayoutGap="16px">
+      <button mat-raised-button color="primary">Salvar</button>
+      <button mat-raised-button>Cancelar</button>
+    </span>
+  </div>
+</mat-card>
