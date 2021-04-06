@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-// import { InMemoryDatabase } from '../in-memory-database';
+import { InMemoryDatabase } from '../in-memory-database';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    // HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase),
     RouterModule,
     MatToolbarModule,
     MatButtonModule,
@@ -29,7 +29,8 @@ import { MatButtonModule } from '@angular/material/button';
     BrowserAnimationsModule,
     HttpClientModule,
 
-    ToolbarComponent
+    ToolbarComponent,
+    MatButtonModule
   ]
 })
 export class CoreModule { }
