@@ -1,0 +1,14 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+  <h1 style="color: black">
+    {{ pageTitle }}
+  </h1>
+
+  <div *ngIf="showButton">
+    <a mat-button class="button" [routerLink]="buttonLink">
+      {{ buttonText }}
+    </a>
+  </div>
+
+
+</div>
