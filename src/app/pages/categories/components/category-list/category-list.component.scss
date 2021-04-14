@@ -6,7 +6,28 @@ table {
   width: 100%;
 }
 
-tr.example-element-row:hover {
+.button {
+  display: none;
+  text-decoration: none;
+  color: #706c6cbf;
+}
+
+.button:hover {
+  color: black;
+}
+
+tr.element-row:hover {
   background: whitesmoke;
   cursor: pointer;
+
+  .button {
+    display: inline-block;
+  }
+
+  .button:active {
+    outline: none;
+    border: none;
+  }
 }
+
+
