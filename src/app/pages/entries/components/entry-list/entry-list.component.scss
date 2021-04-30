@@ -1,0 +1,36 @@
+.custom-card {
+  background-color:#E9ECEF;
+}
+
+table {
+  width: 100%;
+}
+
+.description {
+  font-size: 0.85em;
+  color: #747576;
+}
+
+.button {
+  display: none;
+  text-decoration: none;
+  color: #706c6cbf;
+}
+
+.button:hover {
+  color: black;
+}
+
+tr.element-row:hover {
+  background: whitesmoke;
+  cursor: pointer;
+
+  .button {
+    display: inline-block;
+  }
+
+  .button:active {
+    outline: none;
+    border: none;
+  }
+}

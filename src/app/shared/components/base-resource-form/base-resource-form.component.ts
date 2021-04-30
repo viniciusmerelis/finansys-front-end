@@ -1,5 +1,5 @@
-import { AfterContentChecked, Injectable, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterContentChecked, Injectable, Injector, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 // import toastr from "toastr";
@@ -8,6 +8,8 @@ import { BaseResourceService } from '../../service/base-resource.service';
 
 @Injectable()
 export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked {
+
+  @ViewChild(FormGroupDirective) form: FormGroupDirective;
 
   currentAction: string;
   resourceForm: FormGroup;
@@ -47,6 +49,24 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     } else {
       this.updateResource();
     }
+  }
+
+  shouldShowErrorMessage(control: AbstractControl): boolean{
+    return control.errors && control.touched || control.dirty;
+  }
+
+  getErrorMessage(control: AbstractControl) {
+    if (control.valid) return '';
+
+    if (control.hasError('required')) {
+      return 'Campo obrigatório.';
+    }
+
+    if (control.hasError('minlength')){
+      return `O tamanho mínimo é de ${control.getError('minlength').requiredLength} caracteres.`
+    }
+
+    return 'Falha validação';
   }
 
   //Protected Methods

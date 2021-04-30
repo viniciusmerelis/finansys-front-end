@@ -1,1 +1,75 @@
-<p>entry-form works!</p>
+<app-bread-crumb [items]="[{ text: 'Lançamentos', link: '/entries' }, { text: pageTitle }]"></app-bread-crumb>
+
+<form [formGroup]="resourceForm" (submit)="submitForm()">
+  <mat-card class="custom-card">
+    <app-page-header [pageTitle]="pageTitle" [showButton]="false"></app-page-header>
+
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+
+      <mat-form-field fxFlex="40" fxFlex.xs="100">
+        <mat-label>Nome do lançamento</mat-label>
+        <input matInput autocomplete="off" formControlName="name" />
+        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('name'))">
+          {{getErrorMessage(resourceForm.get('name'))}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('categoryId'))">
+          {{getErrorMessage(resourceForm.get('categoryId'))}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex>
+        <mat-label>Valor (R$)</mat-label>
+        <input matInput autocomplete="off" [imask]="imaskConfig" type="text" formControlName="amount" />
+        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('amount'))">
+          {{getErrorMessage(resourceForm.get('amount'))}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="40" fxFlex.xs="100">
+        <mat-label>Descrição do lançamento</mat-label>
+        <input matInput autocomplete="off" formControlName="description" />
+        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('description'))">
+          {{getErrorMessage(resourceForm.get('description'))}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="20" fxFlex.xs="100">
+        <mat-label>Data</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('date'))">
+          {{getErrorMessage(resourceForm.get('date'))}}</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="20" fxFlex.xs="100">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let opt of typeOptions" [value]="opt.value">
+            {{ opt.text }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <section>
+        <mat-button-toggle-group style="height: 45px;" [formControl]="resourceForm.get('paid')">
+          <mat-button-toggle [value]="true">Pago</mat-button-toggle>
+          <mat-button-toggle [value]="false">Pedente</mat-button-toggle>
+        </mat-button-toggle-group>
+      </section>
+
+      <span fxLayout="row" fxLayoutGap="16px">
+        <button mat-raised-button color="primary" type="submit" [disabled]="submittingForm || resourceForm.invalid"
+          (click)="openSnackBar()">Salvar</button>
+        <button mat-raised-button type="button" [routerLink]="'/entries'">Cancelar</button>
+      </span>
+
+    </div>
+
+  </mat-card>
+</form>
