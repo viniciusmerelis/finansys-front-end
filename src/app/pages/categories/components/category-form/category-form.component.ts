@@ -1,5 +1,6 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { Category } from '../../shared/category.model';
 import { CategoryService } from '../../shared/category.service';
@@ -15,7 +16,8 @@ export class CategoryFormComponent extends BaseResourceFormComponent<Category> {
 
   constructor(
     protected categoryService: CategoryService,
-    protected injector: Injector
+    protected injector: Injector,
+    private _snakeBar: MatSnackBar
   ) {
     super(injector, new Category(), categoryService, Category.fromJson)
   }
@@ -35,6 +37,12 @@ export class CategoryFormComponent extends BaseResourceFormComponent<Category> {
   protected editionPageTitle(): string {
     const resourceName = this.resource.name || '';
     return `Editando Categoria: ${resourceName}`;
+  }
+
+  openSnackBar() {
+    this._snakeBar.open('Cadastro criado com sucesso!', null, {
+      duration: 5000
+    });
   }
 
 }

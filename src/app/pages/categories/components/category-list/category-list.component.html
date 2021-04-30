@@ -1,12 +1,7 @@
 <app-bread-crumb [items]="[{ text: 'Categorias' }]"></app-bread-crumb>
 
 <mat-card class="custom-card">
-  <app-page-header
-    pageTitle="Categorias"
-    buttonText="+ Nova Categoria"
-    buttonLink="new"
-  ></app-page-header
-  ><br />
+  <app-page-header pageTitle="Categorias" buttonText="+ Nova Categoria" buttonLink="new"></app-page-header><br />
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z4">
 
@@ -34,14 +29,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      class="element-row"
-      (click)="navigateTo(row.id)"
-    ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="element-row" (click)="navigateTo(row.id)"></tr>
 
   </table>
-  <br />
 
 </mat-card>
