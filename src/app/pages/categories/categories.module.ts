@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CategoriesRoutingModule } from './categories-routing.module';
@@ -13,7 +12,6 @@ import { CategoryListComponent } from './components/category-list/category-list.
     CategoryFormComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     CategoriesRoutingModule,
   ]
