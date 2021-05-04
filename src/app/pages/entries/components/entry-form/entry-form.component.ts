@@ -1,5 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Category } from 'src/app/pages/categories/shared/category.model';
 import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
@@ -7,10 +8,22 @@ import { Entry, EntryType } from '../../shared/entry.model';
 import { CategoryService } from './../../../categories/shared/category.service';
 import { EntryService } from './../../shared/entry.service';
 
+export const DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY'
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY'
+  }
+};
+
 @Component({
   selector: 'app-entry-form',
   templateUrl: './entry-form.component.html',
-  styleUrls: ['./entry-form.component.scss']
+  styleUrls: ['./entry-form.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS }
+  ]
 })
 export class EntryFormComponent extends BaseResourceFormComponent<Entry> implements OnInit {
 
