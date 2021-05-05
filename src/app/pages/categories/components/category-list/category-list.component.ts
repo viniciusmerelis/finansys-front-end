@@ -15,7 +15,7 @@ export class CategoryListComponent extends BaseResourceListComponent<Category> {
 
   displayedColumns: string[] = ['name', 'description', 'action'];
 
-  get dataSource(): Observable<Category[]>{
+  get dataSource(): Observable<Category[]> {
     return this.resources.asObservable();
   }
 
