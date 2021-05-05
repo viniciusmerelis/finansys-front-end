@@ -9,6 +9,7 @@ import { InMemoryDatabase } from '../in-memory-database';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { FormCanDeactivateGuard } from './guard/form.guard';
 
 
 @NgModule({
@@ -31,6 +32,9 @@ import { MatButtonModule } from '@angular/material/button';
 
     ToolbarComponent,
     MatButtonModule
+  ],
+  providers: [
+    FormCanDeactivateGuard
   ]
 })
 export class CoreModule { }

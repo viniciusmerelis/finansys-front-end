@@ -2,12 +2,13 @@ import { AfterContentChecked, Injectable, Injector, OnInit, ViewChild } from '@a
 import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { CanDeactivateComponent } from 'src/app/core/guard/form.guard';
 // import toastr from "toastr";
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../service/base-resource.service';
 
 @Injectable()
-export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked {
+export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked, CanDeactivateComponent {
 
   @ViewChild(FormGroupDirective) form: FormGroupDirective;
 
@@ -28,8 +29,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     protected jsonDataToResourceFn: (jsonData) => T
   ) {
     this.route = this.injector.get(ActivatedRoute),
-    this.router = this.injector.get(Router),
-    this.formBuilder = this.injector.get(FormBuilder)
+      this.router = this.injector.get(Router),
+      this.formBuilder = this.injector.get(FormBuilder)
   }
 
   ngOnInit() {
@@ -51,7 +52,13 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     }
   }
 
-  shouldShowErrorMessage(control: AbstractControl): boolean{
+  cancel() {
+    const path = this.currentAction == 'edit' ? '../..' : '..';
+    this.currentAction = '';
+    this.router.navigate([path], { relativeTo: this.route });
+  }
+
+  shouldShowErrorMessage(control: AbstractControl): boolean {
     return control.errors && control.touched || control.dirty;
   }
 
@@ -62,11 +69,15 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
       return 'Campo obrigatório.';
     }
 
-    if (control.hasError('minlength')){
+    if (control.hasError('minlength')) {
       return `O tamanho mínimo é de ${control.getError('minlength').requiredLength} caracteres.`
     }
 
     return 'Falha validação';
+  }
+
+  canDeactivate(): boolean {
+    return (this.currentAction != 'new' && this.currentAction != 'edit') || this.resourceForm.pristine;
   }
 
   //Protected Methods
