@@ -1,3 +1,4 @@
+import { Contact } from './pages/contacts/shared/contact.model';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Category } from './pages/categories/shared/category.model';
 import { Entry } from './pages/entries/shared/entry.model';
@@ -24,6 +25,12 @@ export class InMemoryDatabase implements InMemoryDbService {
       { id: 23, name: 'Academia', categoryId: categories[1].id, category: categories[1], paid: false, date: "21/11/2018", amount: "130,00", type: "expense" } as Entry,
     ];
 
-    return { categories, entries };
+    const contacts: Contact[] = [
+      { id: 1, name: 'João', lastName: 'Silva', cpf: '98685439752', email: 'joao.silva@hotmail.com', phone: '992652314', address: { street: 'Rua Garcia Lorca', district: 'Campina Grande', city: 'Cariacica', uf: 'ES'} } as Contact,
+      { id: 2, name: 'Maria', lastName: 'Santos', cpf: '40308878728', email: 'maria.santos@gmail.com', phone: '992321256', address: { street: 'Rua Aurélio Fadini', district: 'Vila Lenira', city: 'Colatina', uf: 'ES'} } as Contact,
+      { id: 3, name: 'Rafaela', lastName: 'Freitas', cpf: '64514545759', email: 'rafa.freitas', phone: '992455889', address: { street: 'Rua Gerson Camata', district: 'Morada de Santa Fé', city: 'Cariacica', uf: 'ES'} } as Contact
+    ];
+
+    return { categories, entries, contacts };
   }
 }
