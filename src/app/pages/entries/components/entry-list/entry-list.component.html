@@ -1,5 +1,3 @@
-<!-- <app-bread-crumb [items]="[{ text: 'Lançamentos' }]"></app-bread-crumb> -->
-
 <mat-card class="custom-card">
   <app-page-header pageTitle="Lançamentos" buttonText="+ Novo Lançamento" buttonLink="new"></app-page-header><br />
 
@@ -9,7 +7,7 @@
       <th mat-header-cell *matHeaderCellDef style="width: 400px;">Lançamento</th>
       <td mat-cell *matCellDef="let element">
         {{ element.name }}<br>
-        <span class="description" >{{ element.description }}</span>
+        <span class="description">{{ element.description }}</span>
       </td>
     </ng-container>
 
@@ -30,7 +28,8 @@
 
     <ng-container matColumnDef="value">
       <th mat-header-cell *matHeaderCellDef>Valor (R$)</th>
-      <td mat-cell *matCellDef="let element" [class.text-success]="element.type == 'revenue'" [class.text-danger]="element.type == 'expense'" >{{ element.amount }}</td>
+      <td mat-cell *matCellDef="let element" [class.text-success]="element.type == 'revenue'"
+        [class.text-danger]="element.type == 'expense'">{{ element.amount }}</td>
     </ng-container>
 
     <ng-container matColumnDef="action">

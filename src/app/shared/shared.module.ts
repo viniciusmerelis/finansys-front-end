@@ -3,28 +3,26 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import { RouterModule } from '@angular/router';
-import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.component';
-import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatDividerModule} from '@angular/material/divider';
-import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { RouterModule } from '@angular/router';
+import { PageHeaderComponent } from './components/page-header/page-header.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
 
 @NgModule({
   declarations: [
-    BreadCrumbComponent,
     PageHeaderComponent,
-    FormFieldErrorComponent
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,
@@ -64,9 +62,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatButtonToggleModule,
 
     //shared components
-    BreadCrumbComponent,
     PageHeaderComponent,
-    FormFieldErrorComponent
+    PageNotFoundComponent
   ]
 })
 export class SharedModule { }
