@@ -46,7 +46,7 @@ export class EntryFormComponent extends BaseResourceFormComponent<Entry> impleme
     protected injector: Injector,
     protected entryService: EntryService,
     protected categoryService: CategoryService,
-    private _snakeBar: MatSnackBar
+    private _snackBar: MatSnackBar
   ) {
     super(injector, new Entry(), entryService, Entry.fromJson)
   }
@@ -86,8 +86,8 @@ export class EntryFormComponent extends BaseResourceFormComponent<Entry> impleme
     return `Editando Lançamento: ${resourceName}`;
   }
 
-  openSnackBar() {
-    this._snakeBar.open('Cadastro criado com sucesso!', null, {
+  createdSuccessMessage() {
+    this._snackBar.open('Lançamento criado com sucesso!', null, {
       duration: 5000
     });
   }
