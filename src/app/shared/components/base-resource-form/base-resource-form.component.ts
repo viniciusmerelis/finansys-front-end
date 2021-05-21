@@ -1,6 +1,5 @@
 import { AfterContentChecked, Injectable, Injector, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { CanDeactivateComponent } from 'src/app/core/guard/form.guard';
@@ -64,8 +63,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   getErrorMessage(control: AbstractControl) {
-    if (control.valid) return '';
-
     if (control.hasError('required')) {
       return 'Campo obrigatório.';
     }
