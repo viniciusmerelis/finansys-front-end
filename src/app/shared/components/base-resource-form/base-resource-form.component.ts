@@ -3,7 +3,6 @@ import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective } from '@an
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { CanDeactivateComponent } from 'src/app/core/guard/form.guard';
-// import toastr from "toastr";
 import { BaseResourceModel } from '../../models/base-resource.model';
 import { BaseResourceService } from '../../service/base-resource.service';
 
@@ -52,6 +51,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     }
   }
 
+
   cancel() {
     const path = this.currentAction == 'edit' ? '../..' : '..';
     this.currentAction = '';
@@ -63,8 +63,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   getErrorMessage(control: AbstractControl) {
-    if (control.valid) return '';
-
     if (control.hasError('required')) {
       return 'Campo obrigatório.';
     }
@@ -146,7 +144,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForSuccess(resource: T) {
-    // toastr.success('Solicitação processada com sucesso!');
+    this.currentAction = '';
     const baseComponentPath: string = this.route.snapshot.parent.url[0].path;
     this.router.navigateByUrl(baseComponentPath, { skipLocationChange: true }).then(
       () => {
@@ -156,7 +154,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   }
 
   protected actionsForError(error) {
-    // toastr.error('Ocorreu um error ao processar sua solicitação!');
     this.submittingForm = false;
     if (error.status === 422) {
       this.serverErrorMessages = JSON.parse(error._body).errors;

@@ -17,7 +17,7 @@ export class CategoryFormComponent extends BaseResourceFormComponent<Category> {
   constructor(
     protected categoryService: CategoryService,
     protected injector: Injector,
-    private _snakeBar: MatSnackBar
+    private _snackBar: MatSnackBar
   ) {
     super(injector, new Category(), categoryService, Category.fromJson)
   }
@@ -25,7 +25,7 @@ export class CategoryFormComponent extends BaseResourceFormComponent<Category> {
   protected buildResourceForm() {
     this.resourceForm = this.formBuilder.group({
       id: [null],
-      name: [null, [Validators.required, Validators.minLength(2)]],
+      name: [null, [Validators.required, Validators.minLength(5)]],
       description: [null]
     });
   }
@@ -39,8 +39,8 @@ export class CategoryFormComponent extends BaseResourceFormComponent<Category> {
     return `Editando Categoria: ${resourceName}`;
   }
 
-  openSnackBar() {
-    this._snakeBar.open('Cadastro criado com sucesso!', null, {
+  createdSuccessMessage() {
+    this._snackBar.open('Categoria criada com sucesso!', null, {
       duration: 5000
     });
   }

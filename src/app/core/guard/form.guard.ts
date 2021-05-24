@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { CanDeactivate } from "@angular/router";
 
-export interface CanDeactivateComponent{
-   canDeactivate():boolean;
+export interface CanDeactivateComponent {
+  canDeactivate(): boolean;
 }
 
 @Injectable()
