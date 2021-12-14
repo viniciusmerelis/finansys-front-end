@@ -19,8 +19,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   }
 
   getAll(): Observable<T[]> {
-    return this.http.get(this.apiPath).pipe(
-      map(this.jsonDataToResources.bind(this)),
+    return this.http.get<T[]>(this.apiPath).pipe(
+      map(() => null),
       catchError(this.handleError)
     )
   }

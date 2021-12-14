@@ -15,13 +15,13 @@ export class EntryService extends BaseResourceService<Entry> {
     super("api/entries", injector, Entry.fromJson);
   }
 
-  create(entry: Entry): Observable<Entry> {
-    return this.setCategoryAndSendToServer(entry, super.create.bind(this))
-  }
+  // create(entry: Entry): Observable<Entry> {
+  //   return this.setCategoryAndSendToServer(entry, super.create.bind(this))
+  // }
 
-  upadate(entry: Entry): Observable<Entry> {
-    return this.setCategoryAndSendToServer(entry, super.upadate.bind(this))
-  }
+  // upadate(entry: Entry): Observable<Entry> {
+  //   return this.setCategoryAndSendToServer(entry, super.upadate.bind(this))
+  // }
 
   getByMonthAndYear(month: number, year: number): Observable<Entry[]> {
     return this.getAll().pipe(
@@ -29,15 +29,15 @@ export class EntryService extends BaseResourceService<Entry> {
     )
   }
 
-  private setCategoryAndSendToServer(entry: Entry, sendFn: any): Observable<Entry> {
-    return this.categoryService.getById(entry.categoryId).pipe(
-      mergeMap(category => {
-        entry.category = category;
-        return sendFn(entry)
-      }),
-      catchError(this.handleError)
-    )
-  }
+  // private setCategoryAndSendToServer(entry: Entry, sendFn: any): Observable<Entry> {
+  //   return this.categoryService.getById(entry.categoryId).pipe(
+  //     mergeMap(category => {
+  //       entry.category = category;
+  //       return sendFn(entry)
+  //     }),
+  //     catchError(this.handleError)
+  //   )
+  // }
 
   private filterByMonthAndYear(entries: Entry[], month: number, year: number) {
     return entries.filter(entry => {

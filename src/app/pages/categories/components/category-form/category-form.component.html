@@ -1,23 +1,23 @@
-<form [formGroup]="resourceForm" (submit)="submitForm()">
+<form [formGroup]="root" (submit)="submitForm()">
   <mat-card class="custom-card">
     <app-page-header [pageTitle]="pageTitle" [showButton]="false"></app-page-header>
 
     <div fxLayout="column wrap" fxLayoutAlign="spapce-between stretch" fxLayoutGap="16px">
       <mat-form-field fxFlex="30" fxFlex.xs="100">
         <mat-label>Nome da categoria</mat-label>
-        <input matInput autocomplete="off" formControlName="name" />
-        <mat-error *ngIf="shouldShowErrorMessage(resourceForm.get('name'))">
-          {{getErrorMessage(resourceForm.get('name'))}}</mat-error>
+        <input matInput autocomplete="off" formControlName="nome" />
+        <mat-error *ngIf="shouldShowErrorMessage(root.get('nome'))">
+          {{getErrorMessage(root.get('nome'))}}</mat-error>
       </mat-form-field>
 
       <mat-form-field fxFlex fxFlex.xs="100">
         <mat-label>Descrição da categoria</mat-label>
-        <input matInput autocomplete="off" formControlName="description" />
+        <input matInput autocomplete="off" formControlName="descricao" />
       </mat-form-field>
 
       <span fxLayout="row" fxLayoutGap="16px">
         <button mat-raised-button color="primary" type="submit"
-          (click)="createdSuccessMessage()" [disabled]="submittingForm || resourceForm.invalid">Salvar</button>
+          (click)="createdSuccessMessage()" [disabled]="submittingForm || root.invalid">Salvar</button>
         <button mat-raised-button type="button" (click)="cancel()">Cancelar</button>
       </span>
     </div>
