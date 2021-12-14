@@ -1,14 +1,37 @@
-import { Injectable, Injector } from "@angular/core";
-import { BaseResourceService } from "src/app/shared/service/base-resource.service";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { Category } from "./category.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService extends BaseResourceService<Category> {
+export class CategoryService {
 
-  constructor(protected injector: Injector) {
-    super("api/categories", injector, Category.fromJson);
+  private apiUrl: string;
+
+  constructor(private http: HttpClient) {
+    this.apiUrl = 'http://localhost:8080/categorias';
+  }
+
+  getAll(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.apiUrl);
+  }
+
+  getById(id: number): Observable<Category>{
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  create(categoria: Category): Observable<Category> {
+    return this.http.post<Category>(this.apiUrl, categoria);
+  }
+
+  update(categoria: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.apiUrl}/${categoria.id}`, categoria);
+  }
+
+  delete(categoriaId: number) {
+    return this.http.delete(`${this.apiUrl}/${categoriaId}`);
   }
 
 }

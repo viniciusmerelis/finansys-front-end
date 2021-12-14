@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { BaseResourceListComponent } from 'src/app/shared/components/base-resource-list/base-resource-list.component';
-import { Category } from '../../shared/category.model';
 import { CategoryService } from '../../shared/category.service';
+import { Category } from '../../shared/category.model';
 
 
 @Component({
@@ -11,28 +9,57 @@ import { CategoryService } from '../../shared/category.service';
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss']
 })
-export class CategoryListComponent extends BaseResourceListComponent<Category> {
-
-  displayedColumns: string[] = ['name', 'description', 'action'];
-
-  get dataSource(): Observable<Category[]> {
-    return this.resources.asObservable();
-  }
+export class CategoryListComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute) {
-    super(categoryService)
+    private route: ActivatedRoute) { }
+
+  categorias: Category[];
+
+  ngOnInit() {
+    this.listarCategorias();
   }
+
+  displayedColumns: string[] = ['name', 'description', 'action'];
+
+  get dataSource(): Category[] {
+    return this.categorias;
+  }
+
+  listarCategorias(): void {
+    this.categoryService.getAll()
+      .subscribe(
+        data => {
+          this.categorias = data;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+  }
+
+  deleteCategory(category: Category, event: MouseEvent) {
+    event.stopPropagation();
+    const mustDelete = confirm('Deseja realmente excluir este item?');
+    if (mustDelete) {
+      this.categoryService.delete(category.id)
+        .subscribe(
+          () => {
+            this.categorias = this.categorias.filter(cat => cat.id !== category.id);
+          },
+          error => {
+            console.log(error);
+          }
+
+        );
+    }
+  }
+
 
   navigateTo(id: number) {
-    this.router.navigate([`${id}/edit`], { relativeTo: this.route });
-  }
-
-  deleteCategory(resource: Category, event: MouseEvent) {
-    event.stopPropagation();
-    this.deleteResource(resource)
+    this.router.navigate([id], { relativeTo: this.route });
   }
 
 }
