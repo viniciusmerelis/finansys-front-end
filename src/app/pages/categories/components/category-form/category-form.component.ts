@@ -68,19 +68,21 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
     this.setPageTitle();
   }
 
-  canDeactivate(): boolean {
-    return (this.currentAction != 'new' && this.currentAction != 'edit') || this.root.pristine;
-  }
-
   submitForm() {
     this.submittingForm = true;
-
-
     if (!this.root.get('id').value) {
       this.createCategory();
     } else {
       this.updateCategory();
     }
+  }
+
+  buildCategoryForm() {
+    this.root = new FormGroup({
+      id: new FormControl(),
+      nome: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      descricao: new FormControl()
+    });
   }
 
   createCategory() {
@@ -91,10 +93,11 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
         this.root.markAsPristine();
         this.root.markAsUntouched();
         this.submittingForm = false;
+        this.goToCategoryList();
       },
       error => {
         console.log(error);
-        this._snackBar.open('Deu ruim')  ;
+        this._snackBar.open('Erro ao criar categoria!');
         this.submittingForm = false;
       }
     );
@@ -108,21 +111,18 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
         this.root.markAsPristine();
         this.root.markAsUntouched();
         this.submittingForm = false;
+        this.goToCategoryList();
       },
       error => {
         console.log(error);
-        this._snackBar.open('Deu ruim')  ;
+        this._snackBar.open('Erro ao atualizar uma categoria!');
         this.submittingForm = false;
       }
     );
   }
 
-  buildCategoryForm() {
-    this.root = new FormGroup({
-      id: new FormControl(),
-      nome: new FormControl(null, [Validators.required, Validators.minLength(5)]),
-      descricao: new FormControl()
-    });
+  canDeactivate(): boolean {
+    return (this.currentAction != 'new' && this.currentAction != 'edit') || this.root.pristine;
   }
 
   setCurrentAction() {
@@ -133,25 +133,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
     }
   }
 
-  creationPageTitle(): string {
-    return 'Cadastro de Nova Categoria';
-  }
-
-  editionPageTitle(): string {
-    const categoryName = this.root.get('nome')?.value || '';
-    return `Editando Categoria: ${categoryName}`;
-  }
-
-  createdSuccessMessage() {
-    this._snackBar.open('Categoria criada com sucesso!', null, {
-      duration: 5000
-    });
-  }
-
-  cancel() {
-    const path = this.currentAction == 'edit' ? '../..' : '..';
-    this.currentAction = '';
-    this.router.navigate([path], { relativeTo: this.route });
+  goToCategoryList() {
+    this.router.navigate(['/categories']);
   }
 
   shouldShowErrorMessage(control: AbstractControl): boolean {
@@ -162,34 +145,30 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
     if (control.hasError('required')) {
       return 'Campo obrigatório.';
     }
-
     if (control.hasError('minlength')) {
       return `O tamanho mínimo é de ${control.getError('minlength').requiredLength} caracteres.`
     }
-
     return 'Falha validação';
   }
 
-  // loadResource() {
-  //   if (this.currentAction == "edit") {
-  //     this.route.paramMap.pipe(
-  //       switchMap(params => this.resourceService.getById(+params.get("id")))
-  //     )
-  //       .subscribe(
-  //         (resource) => {
-  //           this.resource = resource;
-  //           this.resourceForm.patchValue(resource);
-  //         },
-  //         (error) => alert("Ocorreu um error no servidor")
-  //       );
-  //   }
-  // }
-
   setPageTitle() {
     if (this.currentAction == "new") {
-      this.pageTitle = 'Novo';
+      this.pageTitle = 'Nova Categoria';
     } else {
-      this.pageTitle = 'Edição';
+      const categoryName = this.root.get('nome')?.value || '';
+      this.pageTitle = `Editando Categoria: ${categoryName}`;
+    }
+  }
+
+  successMessage() {
+    if (this.currentAction == 'new') {
+      this._snackBar.open('Categoria criada com sucesso!', null, {
+        duration: 5000
+      });
+    } else {
+      this._snackBar.open('Categoria atualizada com sucesso!', null, {
+        duration: 5000
+      });
     }
   }
 
