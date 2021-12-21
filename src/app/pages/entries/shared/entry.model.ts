@@ -1,29 +1,14 @@
-import { BaseResourceModel } from "src/app/shared/models/base-resource.model";
 import { Category } from "../../categories/shared/category.model";
 
-export type EntryType = 'expense' | 'revenue';
+export type EntryType = 'despesa' | 'receita';
 
-export class Entry extends BaseResourceModel {
-  constructor(
-    public id?: number,
-    public name?: string,
-    public description?: string,
-    public type?: EntryType,
-    public amount?: string,
-    public date?: string,
-    public paid?: boolean,
-    public categoryId?: number,
-    public category?: Category
-  ) {
-    super();
-  }
-
-  static fromJson(jsonData: any): Entry {
-    return Object.assign(new Entry(), jsonData);
-  }
-
-  get paidText(): string {
-    return this.paid ? 'Pago' : 'Pedente';
-  }
-
+export interface Entry {
+  id: number;
+  nome: string;
+  descricao: string;
+  tipoLancamento: EntryType;
+  valor: string;
+  data: string;
+  status: boolean;
+  categoria: Category
 }

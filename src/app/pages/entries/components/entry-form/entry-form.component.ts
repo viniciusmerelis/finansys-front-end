@@ -1,11 +1,11 @@
-import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/pages/categories/shared/category.model';
-import { BaseResourceFormComponent } from 'src/app/shared/components/base-resource-form/base-resource-form.component';
 import { CategoryService } from '../../../categories/shared/category.service';
-import { Entry, EntryType } from '../../shared/entry.model';
+import { EntryType } from '../../shared/entry.model';
 import { EntryService } from './../../shared/entry.service';
 
 export const DATE_FORMATS = {
@@ -25,12 +25,15 @@ export const DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS }
   ]
 })
-export class EntryFormComponent extends BaseResourceFormComponent<Entry> implements OnInit {
+export class EntryFormComponent implements OnInit {
 
+  currentAction: string;
   categories: Category[];
+  root: FormGroup;
+  pageTitle: string;
   typeOptions: { value: EntryType, text: string }[] = [
-    { value: 'expense', text: 'Despesa' },
-    { value: 'revenue', text: 'Receita' }
+    { value: 'despesa', text: 'Despesa' },
+    { value: 'receita', text: 'Receita' }
   ];
 
   imaskConfig = {
@@ -43,53 +46,79 @@ export class EntryFormComponent extends BaseResourceFormComponent<Entry> impleme
   };
 
   constructor(
-    protected injector: Injector,
     protected entryService: EntryService,
     protected categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute,
     private _snackBar: MatSnackBar
   ) {
-    super(injector, new Entry(), entryService, Entry.fromJson)
   }
 
   ngOnInit() {
-    this.loadCategories();
-    super.ngOnInit();
+    this.setCurrentAction();
+    this.buildEntryForm();
+    const id = this.route.snapshot.params['id'];
+    if (id === 'new') {
+      this.root.setValue({
+        id: null,
+        nome: null,
+        descricao: null,
+        tipo: null,
+        valor: null,
+        data: null,
+        status: null,
+        categoria: null
+      })
+    } else {
+
+    }
   }
 
-
-  protected buildResourceForm() {
-    const type: EntryType = 'expense';
-    this.resourceForm = this.formBuilder.group({
-      id: [null],
-      name: [null, [Validators.required, Validators.minLength(2)]],
-      description: [null],
-      type: [type, [Validators.required]],
-      amount: [null, [Validators.required]],
-      date: [null, [Validators.required]],
-      paid: [true, [Validators.required]],
-      categoryId: [null, [Validators.required]]
+  protected buildEntryForm() {
+    const type: EntryType = 'despesa';
+    this.root = new FormGroup({
+      id: new FormControl(),
+      nome: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      descricao: new FormControl(),
+      tipo: new FormControl(type, [Validators.required]),
+      valor: new FormControl(null, [Validators.required]),
+      data: new FormControl(null, [Validators.required]),
+      status: new FormControl(true, [Validators.required]),
+      categoria: new FormControl(null, [Validators.required])
     });
   }
 
-  protected loadCategories() {
-    this.categoryService.getAll().subscribe(
-      categories => this.categories = categories
-    );
+  goToEntryList() {
+    this.router.navigate(['/entries']);
   }
 
-  protected creationPageTitle(): string {
-    return 'Cadastro de Novo Lançamento';
+  setCurrentAction() {
+   if (this.route.snapshot.url[0].path == 'new') {
+     this.currentAction = 'new';
+   } else {
+     this.currentAction = 'edit';
+   }
   }
 
-  protected editionPageTitle(): string {
-    const resourceName = this.resource.name || '';
-    return `Editando Lançamento: ${resourceName}`;
+  setPageTitle() {
+    if (this.currentAction == 'new') {
+      this.pageTitle = 'Novo Lançamento';
+    } else {
+      const entryName = this.root.get('nome')?.value || '';
+      this.pageTitle = `Editando Lançamento: ${entryName}`;
+    }
   }
 
-  createdSuccessMessage() {
-    this._snackBar.open('Lançamento criado com sucesso!', null, {
-      duration: 5000
-    });
+  successMessage() {
+    if(this.currentAction == 'new') {
+      this._snackBar.open('Lançamento criado com sucesso!', null, {
+        duration: 5000
+      });
+    } else {
+      this._snackBar.open('Lançamento editado com sucesso!', null, {
+        duration: 5000
+      });
+    }
   }
 
 }

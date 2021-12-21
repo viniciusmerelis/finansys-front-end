@@ -52,11 +52,9 @@ export class CategoryListComponent implements OnInit {
           error => {
             console.log(error);
           }
-
         );
     }
   }
-
 
   navigateTo(id: number) {
     this.router.navigate([id], { relativeTo: this.route });
