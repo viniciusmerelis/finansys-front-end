@@ -11,33 +11,32 @@ import { Category } from '../../shared/category.model';
 })
 export class CategoryListComponent implements OnInit {
 
+  categorias: Category[];
+  displayedColumns: string[] = ['name', 'description', 'action'];
+
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute) { }
-
-  categorias: Category[];
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.listarCategorias();
   }
-
-  displayedColumns: string[] = ['name', 'description', 'action'];
 
   get dataSource(): Category[] {
     return this.categorias;
   }
 
   listarCategorias(): void {
-    this.categoryService.getAll()
-      .subscribe(
-        data => {
-          this.categorias = data;
-        },
-        error => {
-          console.log(error);
-        }
-      )
+    this.categoryService.getAll().subscribe(
+      data => {
+        this.categorias = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   deleteCategory(category: Category, event: MouseEvent) {
