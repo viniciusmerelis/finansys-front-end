@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { BaseResourceListComponent } from 'src/app/shared/components/base-resource-list/base-resource-list.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Entry } from '../../shared/entry.model';
 import { EntryService } from '../../shared/entry.service';
 
@@ -10,29 +8,53 @@ import { EntryService } from '../../shared/entry.service';
   templateUrl: './entry-list.component.html',
   styleUrls: ['./entry-list.component.scss']
 })
-export class EntryListComponent extends BaseResourceListComponent<Entry> {
+export class EntryListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'type', 'data', 'category', 'value', 'action' ];
-
-  get dataSource(): Observable<Entry[]>{
-    return this.resources.asObservable();
-  }
+  lancamentos: Entry[];
+  displayedColumns: string[] = ['name', 'type', 'data', 'category', 'value', 'action'];
 
   constructor(
     private entryService: EntryService,
     private router: Router,
     private route: ActivatedRoute
-    ) {
-    super(entryService)
+  ) { }
+
+  ngOnInit() {
+    this.listarLancamentos();
+  }
+
+  get dataSource(): Entry[] {
+    return this.lancamentos;
+  }
+
+  listarLancamentos(): void {
+    this.entryService.getAll().subscribe(
+      data => {
+        this.lancamentos = data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  deleteEntry(entry: Entry, event: MouseEvent) {
+    event.stopPropagation();
+    const mustDelete = confirm('Deseja realmente excluir este item?');
+    if (mustDelete) {
+      this.entryService.delete(entry.id).subscribe(
+        () => {
+          this.lancamentos = this.lancamentos.filter(lanc => lanc.id !== entry.id);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   navigateTo(id: number) {
     this.router.navigate([`${id}/edit`], { relativeTo: this.route });
-  }
-
-  deleteEntry(resource: Entry, event: MouseEvent) {
-    event.stopPropagation();
-    this.deleteResource(resource)
   }
 
 }

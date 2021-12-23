@@ -38,7 +38,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
     this.route.paramMap
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(params => {
-        const id = params.get("id")
+        const id = params.get("id");
         if (id === 'new') {
           this.root.setValue({ id: null, nome: null, descricao: null });
           this.root.markAsPristine();
@@ -97,7 +97,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
       },
       error => {
         console.log(error);
-        this._snackBar.open('Erro ao criar categoria!');
+        this._snackBar.open('Erro ao criar uma categoria!');
         this.submittingForm = false;
       }
     );
@@ -115,7 +115,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
       },
       error => {
         console.log(error);
-        this._snackBar.open('Erro ao atualizar uma categoria!');
+        this._snackBar.open('Erro ao atualizar a categoria!');
         this.submittingForm = false;
       }
     );
