@@ -54,7 +54,7 @@ export class EntryListComponent implements OnInit {
   }
 
   navigateTo(id: number) {
-    this.router.navigate([`${id}/edit`], { relativeTo: this.route });
+    this.router.navigate([`${id}`], { relativeTo: this.route });
   }
 
 }
