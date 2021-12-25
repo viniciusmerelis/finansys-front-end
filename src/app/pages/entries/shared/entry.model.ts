@@ -1,6 +1,6 @@
 import { Category } from "../../categories/shared/category.model";
 
-export type EntryType = 'despesa' | 'receita';
+export type EntryType = 'DESPESA' | 'RECEITA';
 
 export interface Entry {
   id?: number;
@@ -8,7 +8,7 @@ export interface Entry {
   descricao?: string;
   tipoLancamento?: EntryType;
   valor?: string;
-  data?: string;
-  status?: boolean;
+  dataLancamento?: string;
+  statusLancamento?: boolean;
   categoria?: Category
 }

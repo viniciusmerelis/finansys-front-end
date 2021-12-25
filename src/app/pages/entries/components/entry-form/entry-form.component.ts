@@ -3,8 +3,10 @@ import { AbstractControl, FormControl, FormGroup, FormGroupDirective, Validators
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { error } from 'protractor';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CanDeactivateComponent } from 'src/app/core/guard/form.guard';
 import { Category } from 'src/app/pages/categories/shared/category.model';
 import { CategoryService } from '../../../categories/shared/category.service';
 import { Entry, EntryType } from '../../shared/entry.model';
@@ -27,7 +29,7 @@ export const DATE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS }
   ]
 })
-export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecked, CanDeactivateComponent {
 
   @ViewChild(FormGroupDirective) form: FormGroupDirective;
 
@@ -38,8 +40,8 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
   submittingForm: boolean = false;
   unsubscribeAll = new Subject<void>();
   typeOptions: { value: EntryType, text: string }[] = [
-    { value: 'despesa', text: 'Despesa' },
-    { value: 'receita', text: 'Receita' }
+    { value: 'DESPESA', text: 'Despesa' },
+    { value: 'RECEITA', text: 'Receita' }
   ];
 
   imaskConfig = {
@@ -62,13 +64,22 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
 
   ngOnInit() {
     this.setCurrentAction();
+    this.getAllCategories();
     this.buildEntryForm();
     this.route.paramMap
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(params => {
         const id = params.get("id");
         if (id === 'new') {
-          this.root.setValue({ id: null, nome: null, descricao: null, tipo: null, valor: null, data: null, status: null, categoria: null });
+          this.root.setValue({
+            id: null,
+            nome: null,
+            descricao: null,
+            tipoLancamento: null,
+            valor: null,
+            dataLancamento: null,
+            statusLancamento: null,
+            categoria: null });
           this.root.markAsPristine();
           this.root.markAsUntouched();
         } else {
@@ -81,7 +92,7 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
               },
               error => {
                 console.log(error);
-                this._snackBar.open("Lancamento não encontrado")
+                this._snackBar.open('Lancamento não encontrado')
               });
         }
       });
@@ -97,15 +108,15 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
   }
 
   protected buildEntryForm() {
-    const type: EntryType = 'despesa';
+    const type: EntryType = 'DESPESA';
     this.root = new FormGroup({
       id: new FormControl(),
       nome: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       descricao: new FormControl(),
-      tipo: new FormControl(type, [Validators.required]),
+      tipoLancamento: new FormControl(type, [Validators.required]),
       valor: new FormControl(null, [Validators.required]),
-      data: new FormControl(null, [Validators.required]),
-      status: new FormControl(true, [Validators.required]),
+      dataLancamento: new FormControl(null, [Validators.required]),
+      statusLancamento: new FormControl(true, [Validators.required]),
       categoria: new FormControl(null, [Validators.required])
     });
   }
@@ -151,6 +162,21 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
         console.log(error);
         this._snackBar.open("Erro ao atualizar o lancamento!");
         this.submittingForm = false;
+      }
+    );
+  }
+
+  canDeactivate(): boolean {
+    return (this.currentAction != 'new' && this.currentAction != 'edit') || this.root.pristine;
+  }
+
+  getAllCategories() {
+    this.categoryService.getAll().subscribe(
+      data => {
+        this.categories = data;
+      },
+      error => {
+        console.log(error);
       }
     );
   }

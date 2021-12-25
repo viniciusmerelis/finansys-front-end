@@ -53,7 +53,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy, AfterContentChe
               },
               error => {
                 console.log(error);
-                this._snackBar.open('Não encontrado');
+                this._snackBar.open('Categoria não encontrada');
               });
         }
       });
