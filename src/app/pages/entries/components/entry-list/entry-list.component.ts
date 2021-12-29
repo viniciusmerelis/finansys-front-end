@@ -11,7 +11,7 @@ import { EntryService } from '../../shared/entry.service';
 export class EntryListComponent implements OnInit {
 
   lancamentos: Entry[];
-  displayedColumns: string[] = ['name', 'type', 'data', 'category', 'value', 'action'];
+  displayedColumns: string[] = ['name', 'status', 'data', 'category', 'type', 'value', 'action'];
 
   constructor(
     private entryService: EntryService,

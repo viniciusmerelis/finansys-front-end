@@ -17,14 +17,19 @@ import { RouterModule } from '@angular/router';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomeComponent } from './components/home/home.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { MyInputNumberDirective } from '../core/directives/my-input-number.directive';
 
-
+const maskConfig: Partial<IConfig> = {
+  dropSpecialCharacters: true,
+};
 
 @NgModule({
   declarations: [
     PageHeaderComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    MyInputNumberDirective
   ],
   imports: [
     CommonModule,
@@ -42,7 +47,8 @@ import { HomeComponent } from './components/home/home.component';
     MatDividerModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    NgxMaskModule
   ],
   exports: [
     //shared modules
@@ -62,6 +68,8 @@ import { HomeComponent } from './components/home/home.component';
     MatSnackBarModule,
     MatSelectModule,
     MatButtonToggleModule,
+    NgxMaskModule,
+    MyInputNumberDirective,
 
     //shared components
     PageHeaderComponent,

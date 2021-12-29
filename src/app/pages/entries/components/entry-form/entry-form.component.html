@@ -13,8 +13,8 @@
 
       <mat-form-field fxFlex>
         <mat-label>Categoria</mat-label>
-        <mat-select formControlName="categoria">
-          <mat-option *ngFor="let category of categories" [value]="category.id">
+        <mat-select formControlName="categoria" [compareWith]="compareCategory">
+          <mat-option *ngFor="let category of categories" [value]="category">
             {{ category.nome }}
           </mat-option>
         </mat-select>
@@ -23,8 +23,8 @@
       </mat-form-field>
 
       <mat-form-field fxFlex>
-        <mat-label>Valor (R$)</mat-label>
-        <input matInput autocomplete="off" [imask]="imaskConfig" type="text" formControlName="valor" />
+        <mat-label>Valor (R$)</mat-label>  <!-- [imask]="imaskConfig" -->
+        <input matInput autocomplete="off" type="text" appInputNumber formControlName="valor" />
         <mat-error *ngIf="shouldShowErrorMessage(root.get('valor'))">
           {{getErrorMessage(root.get('valor'))}}</mat-error>
       </mat-form-field>
