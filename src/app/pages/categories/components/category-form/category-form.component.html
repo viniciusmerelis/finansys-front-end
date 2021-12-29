@@ -17,7 +17,7 @@
 
       <span fxLayout="row" fxLayoutGap="16px">
         <button mat-raised-button color="primary" type="submit"
-          (click)="successMessage()" [disabled]="submittingForm || root.invalid">Salvar</button>
+          (click)="successMessage()" [disabled]="submittingForm || root.invalid || !root.dirty">Salvar</button>
         <button mat-raised-button type="button" (click)="goToCategoryList()">Cancelar</button>
       </span>
     </div>
