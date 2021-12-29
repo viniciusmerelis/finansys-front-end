@@ -107,6 +107,10 @@ export class EntryFormComponent implements OnInit, OnDestroy, AfterContentChecke
     this.setPageTitle();
   }
 
+  compareCategory(a: Category, b: Category){
+    return a && b ? a.id == b.id : a === b;
+  }
+
   protected buildEntryForm() {
     const type: EntryType = 'DESPESA';
     this.root = new FormGroup({
